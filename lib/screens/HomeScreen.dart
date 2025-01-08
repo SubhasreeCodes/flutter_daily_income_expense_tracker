@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_daily_income_expense_tracker/screens/ExpenseTransactionScreen.dart';
 import 'package:flutter_daily_income_expense_tracker/screens/IncomeTransactionScreen.dart';
+import 'package:flutter_daily_income_expense_tracker/screens/TransactionFormScreen.dart';
+
 import 'AllTransactionScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -45,6 +47,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       body: TabBarView(
         controller: _tabController, // Assign TabController
         children: screenList, // Use screenList here
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigator.pop(context);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => TransactionFormScreen(title: 'Add Transaction')),
+          );
+        },
+        backgroundColor: Colors.black,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
