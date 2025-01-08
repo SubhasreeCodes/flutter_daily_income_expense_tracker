@@ -88,7 +88,7 @@ class _IncomeTrasactionScreenState extends State<IncomeTrasactionScreen> {
                         : Colors.red,
                   ),
                   title: Text(
-                    '${row.type}: \$${row.amount}',
+                    '${row.type}: \₹${row.amount}',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(row.description),
