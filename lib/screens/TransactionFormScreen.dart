@@ -51,7 +51,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
           SnackBar(content: Text('Failed to create transaction: $error')),
         );
       }
-      
+
       // Reset form or navigate
       setState(() {
         _transactionType = 'INCOME';
@@ -77,7 +77,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Transaction Form'),
+        title: Text(widget.title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
