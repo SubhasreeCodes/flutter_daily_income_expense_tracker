@@ -5,6 +5,8 @@ import 'package:flutter_daily_income_expense_tracker/models/Transaction.dart';
 import 'package:flutter_daily_income_expense_tracker/utils/Constants.dart';
 import 'package:http/http.dart' as http;
 
+import 'TransactionFormScreen.dart';
+
 class AllTransactionScreen extends StatefulWidget {
 
   final String title;
@@ -92,6 +94,21 @@ class _AllTransactionScreenState extends State<AllTransactionScreen> {
                   ),
                   subtitle: Text(row.description),
                   trailing: Text(row.date),
+                  onTap: () async {
+                    // print(row.toJson());
+                    // Navigator.pop(context);
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => TransactionFormScreen(
+                          title: 'Update Transaction',
+                          transactionId: row.id.toString(),
+                          transactionData: row,
+                        ),
+                      ),
+                    );
+                    // Refresh the transactions list when the user returns
+                    fetchTransactions();
+                  },
                 ));
           }),
     );
