@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_daily_income_expense_tracker/models/Transaction.dart';
 import 'package:intl/intl.dart';
 import '../services/TransactionService.dart';
-import 'package:flutter_daily_income_expense_tracker/models/Transaction.dart';
 
 class TransactionFormScreen extends StatefulWidget {
   final String title;
+  final String? transactionId; // Nullable to support both create and update
+  final Transaction? transactionData;
 
-  const TransactionFormScreen({super.key, required this.title});
   const TransactionFormScreen({
     super.key,
     required this.title,
@@ -26,36 +27,38 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   late DateTime _selectedDate;
   late TextEditingController _dateController;
 
-  void _submitForm() {
-    final TransactionService _transactionService = TransactionService();
+  final TransactionService _transactionService = TransactionService();
 
-    @override
-    void initState() {
-      super.initState();
-      if (widget.transactionData != null) {
-        // Prepopulate with existing data
-        _transactionType = widget.transactionData!.type ?? 'INCOME';
-        _description = widget.transactionData!.description ?? '';
-        _amount = widget.transactionData!.amount;
-        _selectedDate = DateTime.tryParse(widget.transactionData!.date) ?? DateTime.now();
-      } else {
-        // Default values for new transactions
-        _transactionType = 'INCOME';
-        _description = '';
-        _amount = null;
-        _selectedDate = DateTime.now();
-      }
-      _dateController = TextEditingController(
-        text: DateFormat('yyyy-MM-dd').format(_selectedDate),
-      );
-    }
-    @override
-    void dispose() {
-      _dateController.dispose();
-      super.dispose();
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.transactionData != null) {
+      // Prepopulate with existing data
+      _transactionType = widget.transactionData!.type ?? 'INCOME';
+      _description = widget.transactionData!.description ?? '';
+      _amount = widget.transactionData!.amount;
+      _selectedDate = DateTime.tryParse(widget.transactionData!.date) ?? DateTime.now();
+    } else {
+      // Default values for new transactions
+      _transactionType = 'INCOME';
+      _description = '';
+      _amount = null;
+      _selectedDate = DateTime.now();
     }
 
-    Future<void> _submitForm() async {
+    _dateController = TextEditingController(
+      text: DateFormat('yyyy-MM-dd').format(_selectedDate),
+    );
+  }
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -86,13 +89,13 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
             SnackBar(content: Text('Transaction created successfully!')),
           );
         }
+
         Navigator.pop(context); // Navigate back after submission
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to submit transaction: $error')),
         );
       }
-
     }
   }
 
